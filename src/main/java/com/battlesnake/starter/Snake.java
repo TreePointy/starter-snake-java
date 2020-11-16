@@ -179,8 +179,8 @@ public class Snake {
         List<String> findPossibleMove(JsonNode moveRequest) {
             List<String> possibleMoves = new ArrayList<>();
             List<Coordinate> currentBodyPositions = new ArrayList<>();
-            Coordinate head = new Coordinate(moveRequest.get("board").get("you").get("head"));
-            moveRequest.get("board").get("you").get("body").forEach(coordinate -> {
+            Coordinate head = new Coordinate(moveRequest.get("you").get("head"));
+            moveRequest.get("you").get("body").forEach(coordinate -> {
                 currentBodyPositions.add(new Coordinate(coordinate));
             });
 

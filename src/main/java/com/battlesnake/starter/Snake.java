@@ -132,30 +132,22 @@ public class Snake {
          * @return a response back to the engine containing Battlesnake movement values.
          */
         public Map<String, String> move(JsonNode moveRequest) {
-            try {
-                LOG.info("Data: {}", JSON_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(moveRequest));
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-
-            /*
-                Example how to retrieve data from the request payload:
-
-                String gameId = moveRequest.get("game").get("id").asText();
-                int height = moveRequest.get("board").get("height").asInt();
-
-            */
+//            try {
+//                LOG.info("Data: {}", JSON_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(moveRequest));
+//            } catch (JsonProcessingException e) {
+//                e.printStackTrace();
+//            }
 
             //String[] possibleMoves = { "up", "down", "left", "right" };
             List<String> possibleMoves = findPossibleMove(moveRequest);
 
-            LOG.info("POSSIBLE MOVES: {}", possibleMoves);
+//            LOG.info("POSSIBLE MOVES: {}", possibleMoves);
 
             // Choose a random direction to move in
             int choice = new Random().nextInt(possibleMoves.size());
             String move = possibleMoves.get(choice);
 
-            LOG.info("MOVE {}", move);
+//            LOG.info("MOVE {}", move);
 
             Map<String, String> response = new HashMap<>();
             response.put("move", move);

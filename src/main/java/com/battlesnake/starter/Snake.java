@@ -186,19 +186,34 @@ public class Snake {
                 currentBodyPositions.add(new Coordinate(coordinate));
             });
 
-            currentBodyPositions.forEach(coordinate -> {
-                if(!coordinate.equals(head.getX() - 1, head.getY()) && head.getX() - 1 >= 0){
-                    possibleMoves.add("left");
-                } else if(!coordinate.equals(head.getX() + 1, head.getY())
-                        && head.getX() + 1 <= moveRequest.get("board").get("width").asInt()) {
-                    possibleMoves.add("right");
-                } else if(!coordinate.equals(head.getX(), head.getY() - 1) && head.getY() - 1 >= 0) {
-                    possibleMoves.add("down");
-                } else if(!coordinate.equals(head.getX(), head.getY() + 1)
-                        && head.getY() + 1 <= moveRequest.get("board").get("height").asInt()) {
-                    possibleMoves.add("up");
-                }
-            });
+            if(head.getX() - 1 > 0 && !currentBodyPositions.contains(new Coordinate(head.getX() - 1, head.getY()))) {
+                possibleMoves.add("left");
+            }
+            if(head.getX() + 1 <= moveRequest.get("board").get("width").asInt()
+                    && !currentBodyPositions.contains(new Coordinate(head.getX() + 1, head.getY()))) {
+                possibleMoves.add("right");
+            }
+            if(head.getY() - 1 > 0 && !currentBodyPositions.contains(new Coordinate(head.getX(), head.getY() - 1))) {
+                possibleMoves.add("down");
+            }
+            if(head.getY() + 1 <= moveRequest.get("board").get("height").asInt()
+                    && !currentBodyPositions.contains(new Coordinate(head.getX(), head.getY() + 1))) {
+                possibleMoves.add("up");
+            }
+
+//            currentBodyPositions.forEach(coordinate -> {
+//                if(!coordinate.equals(head.getX() - 1, head.getY()) && head.getX() - 1 >= 0){
+//                    possibleMoves.add("left");
+//                } else if(!coordinate.equals(head.getX() + 1, head.getY())
+//                        && head.getX() + 1 <= moveRequest.get("board").get("width").asInt()) {
+//                    possibleMoves.add("right");
+//                } else if(!coordinate.equals(head.getX(), head.getY() - 1) && head.getY() - 1 >= 0) {
+//                    possibleMoves.add("down");
+//                } else if(!coordinate.equals(head.getX(), head.getY() + 1)
+//                        && head.getY() + 1 <= moveRequest.get("board").get("height").asInt()) {
+//                    possibleMoves.add("up");
+//                }
+//            });
 
             return possibleMoves;
         }

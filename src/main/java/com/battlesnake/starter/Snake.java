@@ -149,6 +149,8 @@ public class Snake {
             //String[] possibleMoves = { "up", "down", "left", "right" };
             List<String> possibleMoves = findPossibleMove(moveRequest);
 
+            LOG.info("POSSIBLE MOVES: {}", possibleMoves);
+
             // Choose a random direction to move in
             int choice = new Random().nextInt(possibleMoves.size());
             String move = possibleMoves.get(choice);

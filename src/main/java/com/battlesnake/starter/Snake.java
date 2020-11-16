@@ -1,5 +1,6 @@
 package com.battlesnake.starter;
 
+import com.battlesnake.starter.api.Coordinate;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,9 +9,7 @@ import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import static spark.Spark.port;
 import static spark.Spark.post;
@@ -147,11 +146,12 @@ public class Snake {
 
             */
 
-            String[] possibleMoves = { "up", "down", "left", "right" };
+            //String[] possibleMoves = { "up", "down", "left", "right" };
+            List<String> possibleMoves = findPossibleMove(moveRequest);
 
             // Choose a random direction to move in
-            int choice = new Random().nextInt(possibleMoves.length);
-            String move = possibleMoves[choice];
+            int choice = new Random().nextInt(possibleMoves.size());
+            String move = possibleMoves.get(choice);
 
             LOG.info("MOVE {}", move);
 
@@ -175,6 +175,32 @@ public class Snake {
             LOG.info("END");
             return EMPTY;
         }
+
+        List<String> findPossibleMove(JsonNode moveRequest) {
+            List<String> possibleMoves = new ArrayList<>();
+            List<Coordinate> currentBodyPositions = new ArrayList<>();
+            Coordinate head = new Coordinate(moveRequest.get("board").get("you").get("head"));
+            moveRequest.get("board").get("you").get("body").forEach(coordinate -> {
+                currentBodyPositions.add(new Coordinate(coordinate));
+            });
+
+            currentBodyPositions.forEach(coordinate -> {
+                if(!coordinate.equals(head.getX() - 1, head.getY()) && head.getX() - 1 >= 0){
+                    possibleMoves.add("left");
+                } else if(!coordinate.equals(head.getX() + 1, head.getY())
+                        && head.getX() + 1 <= moveRequest.get("board").get("width").asInt()) {
+                    possibleMoves.add("right");
+                } else if(!coordinate.equals(head.getX(), head.getY() - 1) && head.getY() - 1 >= 0) {
+                    possibleMoves.add("down");
+                } else if(!coordinate.equals(head.getX(), head.getY() + 1)
+                        && head.getY() + 1 <= moveRequest.get("board").get("height").asInt()) {
+                    possibleMoves.add("up");
+                }
+            });
+
+            return possibleMoves;
+        }
     }
+
 
 }

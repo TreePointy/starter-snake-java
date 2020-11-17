@@ -178,11 +178,12 @@ public class Snake {
         //primitive to test moving
         List<String> findPossibleMove(JsonNode moveRequest, Grid grid) {
             List<String> possibleMoves = new ArrayList<>();
-            List<Coordinate> currentBodyPositions = new ArrayList<>();
-            Coordinate head = new Coordinate(moveRequest.get("you").get("head"));
-            moveRequest.get("you").get("body").forEach(coordinate -> {
-                currentBodyPositions.add(new Coordinate(coordinate));
-            });
+            //List<Coordinate> currentBodyPositions = new ArrayList<>();
+            //Coordinate head = new Coordinate(moveRequest.get("you").get("head"));
+            //moveRequest.get("you").get("body").forEach(coordinate -> {
+            //    currentBodyPositions.add(new Coordinate(coordinate));
+            //});
+            Coordinate head = grid.getYouHead();
 
             if(head.getX() > 0
                     && !selfOverlap(grid.getFullYouSnake(), new Coordinate(head.getX() - 1, head.getY()))) {

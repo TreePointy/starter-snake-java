@@ -82,4 +82,23 @@ public class Grid {
 
         return null;
     }
+
+    public Coordinate getYouHead() {
+        if(youId != null) {
+            List<Coordinate> head = new ArrayList<Coordinate>();
+            grid.forEach(list -> {
+                Arrays.stream(list).filter(cell -> cell.getOccupyingSnakeHead() == youId)
+                        .collect(Collectors.toList())
+                        .forEach(cell -> {
+                            head.add(cell.getCoordinate());
+                        });
+            });
+            if(head.size() == 1) {
+                return head.get(0);
+            } else {
+                return null;
+            }
+        }
+        return null;
+    }
 }

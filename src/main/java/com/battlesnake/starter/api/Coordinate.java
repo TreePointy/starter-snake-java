@@ -36,4 +36,9 @@ public class Coordinate {
     public Boolean equals(int x, int y) {
         return this.x == x && this.y == y;
     }
+
+    public long distanceToCoordinate(Coordinate endpoint) {
+        return ((endpoint.getX() - this.getX())*(endpoint.getX() - this.getX())
+                        + (endpoint.getY() - this.getY())* (endpoint.getY() - this.getY()) );
+    }
 }

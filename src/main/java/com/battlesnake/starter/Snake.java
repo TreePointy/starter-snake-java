@@ -152,7 +152,8 @@ public class Snake {
 //            int choice = new Random().nextInt(possibleMoves.size());
 
             List<Coordinate> pathToNearestFood = grid.pathToNearestFood();
-            String move = possibleMoves.get(pathToNearestFood.get(0));
+            //String move = possibleMoves.get(pathToNearestFood.get(0));
+            String move = "left";
 
 
             LOG.info("MOVE {}", move);

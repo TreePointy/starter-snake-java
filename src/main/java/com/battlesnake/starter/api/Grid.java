@@ -141,7 +141,7 @@ public class Grid {
             previous.add(new Coordinate[this.getHeight()]);
             visited.add(new Boolean[this.getHeight()]);
             for(int y = 0; y < this.getHeight(); y++) {
-                previous.add(null);
+                previous.get(x)[y] = null;
                 visited.get(x)[y] = false;
             }
         }

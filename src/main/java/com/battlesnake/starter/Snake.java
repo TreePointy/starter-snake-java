@@ -146,7 +146,7 @@ public class Snake {
             grid.setGameState(moveRequest.get("board"));
 
             List<String> possibleMoves = findPossibleMove(moveRequest);
-//            LOG.info("POSSIBLE MOVES: {}", possibleMoves);
+            LOG.info("POSSIBLE MOVES: {}", possibleMoves);
 
             // Choose a random direction to move in
             int choice = new Random().nextInt(possibleMoves.size());
@@ -184,7 +184,7 @@ public class Snake {
                 currentBodyPositions.add(new Coordinate(coordinate));
             });
 
-            if(head.getX() - 1 >= 0
+            if(head.getX() > 0
                     && !selfOverlap(currentBodyPositions, new Coordinate(head.getX() - 1, head.getY()))) {
                 possibleMoves.add("left");
             }
@@ -192,7 +192,7 @@ public class Snake {
                     && !selfOverlap(currentBodyPositions, new Coordinate(head.getX() + 1, head.getY()))) {
                 possibleMoves.add("right");
             }
-            if(head.getY() - 1 >= 0
+            if(head.getY() > 0
                     && !selfOverlap(currentBodyPositions, new Coordinate(head.getX(), head.getY() - 1))) {
                 possibleMoves.add("down");
             }

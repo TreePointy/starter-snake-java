@@ -168,7 +168,7 @@ public class Grid {
         return reconstructPath(previous, start, end);
     }
 
-    private List<Coordinate> getNeighbours(Coordinate cell) {
+    public List<Coordinate> getNeighbours(Coordinate cell) {
         List<Coordinate> neighbours = new ArrayList<Coordinate>();
         if(cell.getX() - 1 > 0 && grid.get(cell.getX() - 1)[cell.getY()].getFreeCell()) {
             neighbours.add(new Coordinate(cell.getX() - 1, cell.getY()));

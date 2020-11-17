@@ -149,11 +149,15 @@ public class Snake {
 //            LOG.info("POSSIBLE MOVES: {}", possibleMoves);
 
 //            // Choose a random direction to move in
-//            int choice = new Random().nextInt(possibleMoves.size());
+            List<Coordinate> neighbours = grid.getNeighbours(new Coordinate(moveRequest.get("you").get("head")));
+            int randomChoice = new Random().nextInt(possibleMoves.size());
 
             List<Coordinate> pathToNearestFood = grid.pathToNearestFood();
-            //String move = possibleMoves.get(pathToNearestFood.get(0));
-            String move = "left";
+            if(pathToNearestFood.get(0) == null) {
+                LOG.info("path is null");
+            }
+            String move = possibleMoves.get(pathToNearestFood.get(0));
+
 
 
             LOG.info("MOVE {}", move);

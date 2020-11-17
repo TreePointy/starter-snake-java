@@ -140,14 +140,12 @@ public class Snake {
 
             //initialize the grid
             Grid grid = new Grid();
-//            grid.initializeGrid(moveRequest.get("board").get("width").asInt(),
-//                    moveRequest.get("board").get("height").asInt());
-//
-//            grid.setGameState(moveRequest.get("board"));
+            grid.initializeGrid(moveRequest.get("board").get("width").asInt(),
+                    moveRequest.get("board").get("height").asInt());
 
-            //String[] possibleMoves = { "up", "down", "left", "right" };
+            grid.setGameState(moveRequest.get("board"));
+
             List<String> possibleMoves = findPossibleMove(moveRequest);
-
 //            LOG.info("POSSIBLE MOVES: {}", possibleMoves);
 
             // Choose a random direction to move in

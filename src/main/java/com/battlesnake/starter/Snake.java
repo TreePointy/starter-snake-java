@@ -143,9 +143,9 @@ public class Snake {
             grid.initializeGrid(moveRequest.get("board").get("width").asInt(),
                     moveRequest.get("board").get("height").asInt());
 
-            grid.setGameState(moveRequest.get("board"));
+            grid.setGameState(moveRequest);
 
-            List<String> possibleMoves = findPossibleMove(moveRequest);
+            List<String> possibleMoves = findPossibleMove(moveRequest, grid);
             LOG.info("POSSIBLE MOVES: {}", possibleMoves);
 
             // Choose a random direction to move in
@@ -176,7 +176,7 @@ public class Snake {
         }
 
         //primitive to test moving
-        List<String> findPossibleMove(JsonNode moveRequest) {
+        List<String> findPossibleMove(JsonNode moveRequest, Grid grid) {
             List<String> possibleMoves = new ArrayList<>();
             List<Coordinate> currentBodyPositions = new ArrayList<>();
             Coordinate head = new Coordinate(moveRequest.get("you").get("head"));
@@ -185,19 +185,19 @@ public class Snake {
             });
 
             if(head.getX() > 0
-                    && !selfOverlap(currentBodyPositions, new Coordinate(head.getX() - 1, head.getY()))) {
+                    && !selfOverlap(grid.getFullYouSnake(), new Coordinate(head.getX() - 1, head.getY()))) {
                 possibleMoves.add("left");
             }
             if(head.getX() + 1 < moveRequest.get("board").get("width").asInt()
-                    && !selfOverlap(currentBodyPositions, new Coordinate(head.getX() + 1, head.getY()))) {
+                    && !selfOverlap(grid.getFullYouSnake(), new Coordinate(head.getX() + 1, head.getY()))) {
                 possibleMoves.add("right");
             }
             if(head.getY() > 0
-                    && !selfOverlap(currentBodyPositions, new Coordinate(head.getX(), head.getY() - 1))) {
+                    && !selfOverlap(grid.getFullYouSnake(), new Coordinate(head.getX(), head.getY() - 1))) {
                 possibleMoves.add("down");
             }
             if(head.getY() + 1 < moveRequest.get("board").get("height").asInt()
-                    && !selfOverlap(currentBodyPositions, new Coordinate(head.getX(), head.getY() + 1))) {
+                    && !selfOverlap(grid.getFullYouSnake(), new Coordinate(head.getX(), head.getY() + 1))) {
                 possibleMoves.add("up");
             }
 

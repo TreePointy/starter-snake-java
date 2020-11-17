@@ -4,13 +4,16 @@ import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @Data
 @Accessors(chain = true)
 public class Grid {
     List<Cell[]> grid = new ArrayList<Cell[]>();
+    String youId;
 
     public void initializeGrid(int width, int height) {
         for(int x = 0; x < width; x++) {
@@ -22,9 +25,11 @@ public class Grid {
     }
 
     public void setGameState(JsonNode node) {
+        youId = node.get("you").get("id").asText();
         if(node != null) {
-            setFoodCells(node.get("food"));
-            setEnemySnakeCells(node.get("snakes"));
+            setFoodCells(node.get("board").get("food"));
+            setEnemySnakeCells(node.get("board").get("snakes"));
+            setYouSnakeCells(node.get("you"));
         }
     }
 
@@ -48,5 +53,33 @@ public class Grid {
                 });
             });
         }
+    }
+
+    private void setYouSnakeCells(JsonNode you) {
+        if(you != null) {
+            grid.get(you.get("head").get("x").asInt())[you.get("head").get("y").asInt()]
+                    .setOccupyingSnake(you.get("id").asText())
+                    .setOccupyingSnakeHead(you.get("id").asText());
+            you.get("body").forEach(coordinate -> {
+                grid.get(coordinate.get("x").asInt())[coordinate.get("y").asInt()]
+                        .setOccupyingSnake(you.get("id").asText());
+            });
+        }
+    }
+
+    public List<Coordinate> getFullYouSnake() {
+        if(youId != null) {
+            List<Coordinate> fullYouSnake = new ArrayList<Coordinate>();
+            grid.forEach(list -> {
+                Arrays.stream(list).filter(cell -> cell.getOccupyingSnake() == youId)
+                        .collect(Collectors.toList())
+                        .forEach(cell -> {
+                            fullYouSnake.add(cell.getCoordinate());
+                        });
+            });
+            return fullYouSnake;
+        }
+
+        return null;
     }
 }

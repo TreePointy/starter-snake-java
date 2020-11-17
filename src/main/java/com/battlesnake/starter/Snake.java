@@ -156,9 +156,10 @@ public class Snake {
             if(pathToNearestFood == null) {
                 LOG.info("path is null");
             }
-            String move = possibleMoves.get(pathToNearestFood.get(0));
-
-            if(move == null) {
+            String move;
+            if(pathToNearestFood.size() > 0) {
+                move = possibleMoves.get(pathToNearestFood.get(0));
+            } else {
                 move = possibleMoves.get(neighbours.get(randomChoice));
             }
 

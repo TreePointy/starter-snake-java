@@ -158,6 +158,10 @@ public class Snake {
             }
             String move = possibleMoves.get(pathToNearestFood.get(0));
 
+            if(move == null) {
+                move = possibleMoves.get(neighbours.get(randomChoice));
+            }
+
 
 
             LOG.info("MOVE {}", move);

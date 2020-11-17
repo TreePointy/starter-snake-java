@@ -141,6 +141,7 @@ public class Grid {
             previous.add(new Coordinate[this.getHeight()]);
             visited.add(new Boolean[this.getHeight()]);
             for(int y = 0; y < this.getHeight(); y++) {
+                previous.add(null);
                 visited.get(x)[y] = false;
             }
         }
@@ -187,13 +188,13 @@ public class Grid {
 
     private List<Coordinate> reconstructPath(List<Coordinate[]> previous, Coordinate start, Coordinate end) {
         List<Coordinate> path = new ArrayList<Coordinate>();
-
-        Coordinate prev = previous.get(end.getX())[end.getY()];
-        while(!prev.equals(start)) {
-            path.add(prev);
-            prev = previous.get(prev.getX())[prev.getY()];
+        if(previous != null) {
+            Coordinate prev = previous.get(end.getX())[end.getY()];
+            while (!prev.equals(start)) {
+                path.add(prev);
+                prev = previous.get(prev.getX())[prev.getY()];
+            }
         }
-
         Collections.reverse(path);
         return path;
     }

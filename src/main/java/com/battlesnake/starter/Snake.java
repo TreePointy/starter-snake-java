@@ -1,7 +1,7 @@
 package com.battlesnake.starter;
 
 import com.battlesnake.starter.api.Coordinate;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.battlesnake.starter.api.Grid;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -138,6 +138,13 @@ public class Snake {
 //                e.printStackTrace();
 //            }
 
+            //initialize the grid
+            Grid grid = new Grid();
+            grid.initializeGrid(moveRequest.get("board").get("width").asInt(),
+                    moveRequest.get("board").get("height").asInt());
+
+            grid.setGameState(moveRequest.get("board"));
+
             //String[] possibleMoves = { "up", "down", "left", "right" };
             List<String> possibleMoves = findPossibleMove(moveRequest);
 
@@ -170,6 +177,7 @@ public class Snake {
             return EMPTY;
         }
 
+        //primitive to test moving
         List<String> findPossibleMove(JsonNode moveRequest) {
             List<String> possibleMoves = new ArrayList<>();
             List<Coordinate> currentBodyPositions = new ArrayList<>();

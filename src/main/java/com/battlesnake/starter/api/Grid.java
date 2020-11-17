@@ -10,12 +10,13 @@ import java.util.ArrayList;
 @Data
 @Accessors(chain = true)
 public class Grid {
-    Cell[][] grid;
+    List<Cell[]> grid = new ArrayList<Cell[]>();
 
     public void initializeGrid(int width, int height) {
         for(int x = 0; x < width; x++) {
+            grid.add(new Cell[height]);
             for(int y = 0; y < height; y++) {
-                grid[x][y] = new Cell(x, y, false);
+                grid.get(x)[y] = new Cell(x, y, false);
             }
         }
     }
@@ -30,7 +31,7 @@ public class Grid {
     private void setFoodCells(JsonNode food) {
         if(food != null) {
             food.forEach(coordinate -> {
-                grid[coordinate.get("x").asInt()][coordinate.get("y").asInt()].setHasFood(true);
+                grid.get(coordinate.get("x").asInt())[coordinate.get("y").asInt()].setHasFood(true);
             });
         }
     }
@@ -38,11 +39,11 @@ public class Grid {
     private void setEnemySnakeCells(JsonNode snakes) {
         if(snakes != null) {
             snakes.forEach(snake -> {
-                grid[snake.get("head").get("x").asInt()][snake.get("head").get("y").asInt()]
+                grid.get(snake.get("head").get("x").asInt())[snake.get("head").get("y").asInt()]
                         .setOccupyingSnake(snake.get("id").asText())
                         .setOccupyingSnakeHead(snake.get("id").asText());
                 snake.get("body").forEach(coordinate -> {
-                    grid[coordinate.get("x").asInt()][coordinate.get("y").asInt()]
+                    grid.get(coordinate.get("x").asInt())[coordinate.get("y").asInt()]
                             .setOccupyingSnake(snake.get("id").asText());
                 });
             });

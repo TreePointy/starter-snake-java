@@ -154,7 +154,6 @@ public class Snake {
 
             List<Coordinate> pathToNearestFood = new ArrayList<Coordinate>();
             pathToNearestFood = grid.pathToNearestFood();
-//            LOG.info("food path", pathToNearestFood.size());
 
             //testing the Grid methods
             Coordinate start = new Coordinate(1, 1);
@@ -165,17 +164,7 @@ public class Snake {
             LOG.info("nearest food {}", grid.findNearestFoodCoordinate());
             LOG.info("path to nearest food {}", grid.pathToNearestFood());
 
-
-            if(pathToNearestFood == null) {
-                LOG.info("path is null");
-            }
-            String move;
-            if(pathToNearestFood.size() > 0) {
-                move = possibleMoves.get(pathToNearestFood.get(0));
-            } else {
-                move = possibleMoves.get(neighbours.get(randomChoice));
-            }
-
+            String move = possibleMoves.get(pathToNearestFood.get(0));
             LOG.info("MOVE {}", move);
 
             Map<String, String> response = new HashMap<>();

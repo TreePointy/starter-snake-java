@@ -156,14 +156,15 @@ public class Snake {
             pathToNearestFood = grid.pathToNearestFood();
 
             //testing the Grid methods
-            Coordinate start = new Coordinate(1, 1);
-            Coordinate end = new Coordinate(3, 3);
+//            Coordinate start = new Coordinate(1, 1);
+//            Coordinate end = new Coordinate(3, 3);
+//
+//            LOG.info("test path {}", grid.findShortestPath(start, end));
+//            LOG.info("test neighbour {}", grid.getNeighbours(start));
+//            LOG.info("nearest food {}", grid.findNearestFoodCoordinate());
+//            LOG.info("path to nearest food {}", grid.pathToNearestFood());
 
-            LOG.info("test path {}", grid.findShortestPath(start, end));
-            LOG.info("test neighbour {}", grid.getNeighbours(start));
-            LOG.info("nearest food {}", grid.findNearestFoodCoordinate());
-            LOG.info("path to nearest food {}", grid.pathToNearestFood());
-
+            LOG.info("next step {}", pathToNearestFood.get(0));
             LOG.info("possible moves {}", possibleMoves);
             String move = possibleMoves.get(pathToNearestFood.get(0));
             LOG.info("MOVE {}", move);
@@ -190,7 +191,7 @@ public class Snake {
         }
 
         //primitive to test moving
-        Map<Coordinate, String> findPossibleMove(Grid grid) {
+        HashMap<Coordinate, String> findPossibleMove(Grid grid) {
             List<String> possibleMovesString = new ArrayList<>();
             Coordinate head = grid.getYouHead();
             HashMap<Coordinate, String> possibleMoves = new HashMap<Coordinate, String>();

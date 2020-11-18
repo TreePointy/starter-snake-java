@@ -153,7 +153,7 @@ public class Snake {
 
             // Choose a random direction to move in
 //            List<Coordinate> neighbours = grid.getNeighbours(new Coordinate(moveRequest.get("you").get("head")));
-//            int randomChoice = new Random().nextInt(possibleMoves.size());
+            int randomChoice = new Random().nextInt(possibleMoves.size());
 
             //testing the Grid methods
 //            Coordinate start = new Coordinate(1, 1);
@@ -170,7 +170,7 @@ public class Snake {
                 LOG.info("NEXT STEP {}", nextMove);
                 move = checkMoveCoordinate(nextMove, grid);
             } else {
-                move = "";
+                move = possibleMoves.get(randomChoice);
             }
 
             LOG.info("MOVE {}", move);

@@ -145,7 +145,7 @@ public class Snake {
 
             grid.setGameState(moveRequest);
 
-            Map<Coordinate, String> possibleMoves = findPossibleMove(grid);
+            Map<Integer, String> possibleMoves = findPossibleMove(grid);
 //            LOG.info("POSSIBLE MOVES: {}", possibleMoves.size());
 
 //            // Choose a random direction to move in
@@ -166,7 +166,7 @@ public class Snake {
 
             LOG.info("next step {}", pathToNearestFood.get(0));
             LOG.info("possible moves {}", possibleMoves);
-            String move = possibleMoves.get(pathToNearestFood.get(0));
+            String move = possibleMoves.get(pathToNearestFood.get(0).hashCode());
             LOG.info("MOVE {}", move);
 
             Map<String, String> response = new HashMap<>();
@@ -191,26 +191,26 @@ public class Snake {
         }
 
         //primitive to test moving
-        HashMap<Coordinate, String> findPossibleMove(Grid grid) {
+        HashMap<Integer, String> findPossibleMove(Grid grid) {
             List<String> possibleMovesString = new ArrayList<>();
             Coordinate head = grid.getYouHead();
-            HashMap<Coordinate, String> possibleMoves = new HashMap<Coordinate, String>();
+            HashMap<Integer, String> possibleMoves = new HashMap<Integer, String>();
 
             if(head.getX() > 0
                     && !selfOverlap(grid.getFullYouSnake(), new Coordinate(head.getX() - 1, head.getY()))) {
-                possibleMoves.put(new Coordinate(head.getX() - 1, head.getY()), "left");
+                possibleMoves.put(new Coordinate(head.getX() - 1, head.getY()).hashCode(), "left");
             }
             if(head.getX() + 1 < grid.getWidth()
                     && !selfOverlap(grid.getFullYouSnake(), new Coordinate(head.getX() + 1, head.getY()))) {
-                possibleMoves.put(new Coordinate(head.getX() + 1, head.getY()), "right");
+                possibleMoves.put(new Coordinate(head.getX() + 1, head.getY()).hashCode(), "right");
             }
             if(head.getY() > 0
                     && !selfOverlap(grid.getFullYouSnake(), new Coordinate(head.getX(), head.getY() - 1))) {
-                possibleMoves.put(new Coordinate(head.getX(), head.getY() - 1), "down");
+                possibleMoves.put(new Coordinate(head.getX(), head.getY() - 1).hashCode(), "down");
             }
             if(head.getY() + 1 < grid.getHeight()
                     && !selfOverlap(grid.getFullYouSnake(), new Coordinate(head.getX(), head.getY() + 1))) {
-                possibleMoves.put(new Coordinate(head.getX(), head.getY() + 1), "up");
+                possibleMoves.put(new Coordinate(head.getX(), head.getY() + 1).hashCode(), "up");
             }
 
             return possibleMoves;

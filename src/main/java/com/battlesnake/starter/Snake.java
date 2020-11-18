@@ -161,7 +161,9 @@ public class Snake {
             Coordinate end = new Coordinate(3, 3);
 
             LOG.info("test path {}", grid.findShortestPath(start, end));
-            LOG.info("test neighbour {}", grid.getNeighbours(start).size());
+            LOG.info("test neighbour {}", grid.getNeighbours(start));
+            LOG.info("nearest food {}", grid.findNearestFoodCoordinate());
+            LOG.info("path to nearest food {}", grid.pathToNearestFood());
 
 
             if(pathToNearestFood == null) {

@@ -146,7 +146,7 @@ public class Snake {
             grid.setGameState(moveRequest);
 
             Map<Coordinate, String> possibleMoves = findPossibleMove(grid);
-//            LOG.info("POSSIBLE MOVES: {}", possibleMoves);
+            LOG.info("POSSIBLE MOVES: {}", possibleMoves.size());
 
 //            // Choose a random direction to move in
             List<Coordinate> neighbours = grid.getNeighbours(new Coordinate(moveRequest.get("you").get("head")));
@@ -162,8 +162,6 @@ public class Snake {
             } else {
                 move = possibleMoves.get(neighbours.get(randomChoice));
             }
-
-
 
             LOG.info("MOVE {}", move);
 
@@ -190,7 +188,7 @@ public class Snake {
 
         //primitive to test moving
         Map<Coordinate, String> findPossibleMove(Grid grid) {
-            //List<String> possibleMoves = new ArrayList<>();
+            List<String> possibleMovesString = new ArrayList<>();
             Coordinate head = grid.getYouHead();
             HashMap<Coordinate, String> possibleMoves = new HashMap<Coordinate, String>();
 

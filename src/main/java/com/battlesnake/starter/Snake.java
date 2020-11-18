@@ -194,7 +194,10 @@ public class Snake {
         HashMap<Integer, String> findPossibleMove(Grid grid) {
             List<String> possibleMovesString = new ArrayList<>();
             Coordinate head = grid.getYouHead();
-            HashMap<Integer, String> possibleMoves = new HashMap<Integer, String>();
+            if(head == null) {
+                return null;
+            }
+            HashMap<Integer, String> possibleMoves = new HashMap<>();
 
             if(head.getX() > 0
                     && !selfOverlap(grid.getFullYouSnake(), new Coordinate(head.getX() - 1, head.getY()))) {

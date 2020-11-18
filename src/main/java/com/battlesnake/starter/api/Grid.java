@@ -191,6 +191,7 @@ public class Grid {
     //private
     public List<Coordinate> reconstructPath(List<Coordinate[]> previous, Coordinate start, Coordinate end) {
         List<Coordinate> path = new ArrayList<Coordinate>();
+        path.add(end);
         if(previous != null) {
             Coordinate prev = previous.get(end.getX())[end.getY()];
             while (prev != null && !prev.equals(start)) {

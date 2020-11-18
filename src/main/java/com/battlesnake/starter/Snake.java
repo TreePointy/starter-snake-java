@@ -169,7 +169,10 @@ public class Snake {
             String move;
             if(pathToNearestFood != null) {
                 move = possibleMoves.get(pathToNearestFood.get(0).hashCode());
+            } else {
+                move = "";
             }
+
             LOG.info("MOVE {}", move);
 
             Map<String, String> response = new HashMap<>();

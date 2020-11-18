@@ -193,7 +193,7 @@ public class Grid {
         List<Coordinate> path = new ArrayList<Coordinate>();
         if(previous != null) {
             Coordinate prev = previous.get(end.getX())[end.getY()];
-            while (!prev.equals(start)) {
+            while (prev != null && !prev.equals(start)) {
                 path.add(prev);
                 prev = previous.get(prev.getX())[prev.getY()];
             }

@@ -163,10 +163,11 @@ public class Snake {
 //            LOG.info("nearest food {}", grid.findNearestFoodCoordinate());
 //            LOG.info("path to nearest food {}", grid.pathToNearestFood());
 
-            LOG.info("NEXT STEP {}", pathToNearestFood.get(0));
             String move;
             if(pathToNearestFood != null) {
-                move = possibleMoves.get(pathToNearestFood.get(0));
+                Coordinate nextMove = pathToNearestFood.get(0);
+                LOG.info("NEXT STEP {}", nextMove);
+                move = (String)possibleMoves.get(nextMove);
             } else {
                 move = "";
             }

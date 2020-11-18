@@ -47,7 +47,7 @@ public class Grid {
         List<Coordinate> foodCells = new ArrayList<Coordinate>();
         for(int x = 0; x < this.getWidth(); x++) {
             for(int y = 0; y < this.getHeight(); y++) {
-                if(grid.get(x)[y].getHasFood()) {
+                if(grid.get(x)[y].getHasFood() && grid.get(x)[y].getFreeCell()) {
                     foodCells.add(grid.get(x)[y].getCoordinate());
                 }
             }
@@ -122,14 +122,14 @@ public class Grid {
     //private
     public Coordinate findNearestFoodCoordinate() {
         Coordinate head = this.getYouHead();
-        List<Coordinate> foodCells = new ArrayList<Coordinate>();
-        grid.forEach(list -> {
-            Arrays.stream(list).filter(cell -> cell.getHasFood() == true)
-                    .collect(Collectors.toList())
-                    .forEach(cell -> {
-                        foodCells.add(cell.getCoordinate());
-                    });
-        });
+        List<Coordinate> foodCells = getFoodCells();//new ArrayList<Coordinate>();
+//        grid.forEach(list -> {
+//            Arrays.stream(list).filter(cell -> cell.getHasFood() == true)
+//                    .collect(Collectors.toList())
+//                    .forEach(cell -> {
+//                        foodCells.add(cell.getCoordinate());
+//                    });
+//        });
 
         long distance = 1000000;
         Coordinate min = new Coordinate(-1, -1);

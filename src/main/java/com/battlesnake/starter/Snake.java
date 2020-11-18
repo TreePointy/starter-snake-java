@@ -160,7 +160,7 @@ public class Snake {
             Coordinate start = new Coordinate(1, 1);
             Coordinate end = new Coordinate(3, 3);
 
-            LOG.info("test path {}", grid.findShortestPath(start, end).size());
+            LOG.info("test path {}", grid.findShortestPath(start, end));
             LOG.info("test neighbour {}", grid.getNeighbours(start).size());
 
 

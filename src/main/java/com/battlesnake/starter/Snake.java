@@ -11,9 +11,7 @@ import spark.Response;
 
 import java.util.*;
 
-import static spark.Spark.port;
-import static spark.Spark.post;
-import static spark.Spark.get;
+import static spark.Spark.*;
 
 /**
  * This is a simple Battlesnake server written in Java.
@@ -165,13 +163,14 @@ public class Snake {
 //            LOG.info("path to nearest food {}", grid.pathToNearestFood());
 
             String move;
-            if(pathToNearestFood != null) {
-                Coordinate nextMove = pathToNearestFood.get(0);
-                LOG.info("NEXT STEP {}", nextMove);
-                move = checkMoveCoordinate(nextMove, grid);
-            } else {
-                move = possibleMoves.get(randomChoice);
-            }
+            Coordinate nextCoordinate = pathToNearestFood.get(0);
+            LOG.info("NEXT COORD {}", nextCoordinate);
+
+            String coordinateDirection = checkMoveCoordinate(nextCoordinate, grid);
+
+            move = possibleMoves.contains(coordinateDirection)
+                    ? coordinateDirection
+                    : possibleMoves.get(randomChoice);
 
             LOG.info("MOVE {}", move);
 

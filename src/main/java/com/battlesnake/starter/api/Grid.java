@@ -43,6 +43,18 @@ public class Grid {
         }
     }
 
+    public List<Coordinate> getFoodCells() {
+        List<Coordinate> foodCells = new ArrayList<Coordinate>();
+        for(int x = 0; x < this.getWidth(); x++) {
+            for(int y = 0; y < this.getHeight(); y++) {
+                if(grid.get(x)[y].getHasFood()) {
+                    foodCells.add(grid.get(x)[y].getCoordinate());
+                }
+            }
+        }
+        return foodCells;
+    }
+
     private void setEnemySnakeCells(JsonNode snakes) {
         if(snakes != null) {
             snakes.forEach(snake -> {

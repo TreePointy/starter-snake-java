@@ -148,6 +148,7 @@ public class Snake {
             LOG.info("POSSIBLE MOVES: {}", possibleMoves);
             List<Coordinate> pathToNearestFood = grid.pathToNearestFood();
             LOG.info("PATH TO FOOD {}", pathToNearestFood);
+            LOG.info("NEAREST FOOD {}", grid.findNearestFoodCoordinate());
 
             // Choose a random direction to move in
 //            List<Coordinate> neighbours = grid.getNeighbours(new Coordinate(moveRequest.get("you").get("head")));

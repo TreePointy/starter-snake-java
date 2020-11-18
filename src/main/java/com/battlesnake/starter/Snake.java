@@ -152,8 +152,16 @@ public class Snake {
             List<Coordinate> neighbours = grid.getNeighbours(new Coordinate(moveRequest.get("you").get("head")));
             int randomChoice = new Random().nextInt(possibleMoves.size());
 
-            List<Coordinate> pathToNearestFood = grid.pathToNearestFood();
-            LOG.info("food path", pathToNearestFood.size());
+            List<Coordinate> pathToNearestFood = new ArrayList<Coordinate>();
+            pathToNearestFood = grid.pathToNearestFood();
+//            LOG.info("food path", pathToNearestFood.size());
+
+            //testing the Grid methods
+            Coordinate start = new Coordinate(1, 1);
+            Coordinate end = new Coordinate(3, 3);
+
+            LOG.info("test path", grid.findShortestPath(start, end).size());
+
 
             if(pathToNearestFood == null) {
                 LOG.info("path is null");

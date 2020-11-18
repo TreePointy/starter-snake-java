@@ -107,7 +107,8 @@ public class Grid {
         return null;
     }
 
-    private Coordinate findNearestFoodCoordinate() {
+    //private
+    public Coordinate findNearestFoodCoordinate() {
         Coordinate head = this.getYouHead();
         List<Coordinate> foodCells = new ArrayList<Coordinate>();
         grid.forEach(list -> {
@@ -132,7 +133,8 @@ public class Grid {
         return findShortestPath(this.getYouHead(), this.findNearestFoodCoordinate());
     }
 
-    private List<Coordinate> findShortestPath(Coordinate start, Coordinate end) {
+    //private
+    public List<Coordinate> findShortestPath(Coordinate start, Coordinate end) {
         List<String> path = new ArrayList<String >();
 
         List<Coordinate[]> previous = new ArrayList<Coordinate[]>();
@@ -166,6 +168,7 @@ public class Grid {
             }
         }
 
+
         return reconstructPath(previous, start, end);
     }
 
@@ -186,7 +189,8 @@ public class Grid {
         return neighbours;
     }
 
-    private List<Coordinate> reconstructPath(List<Coordinate[]> previous, Coordinate start, Coordinate end) {
+    //private
+    public List<Coordinate> reconstructPath(List<Coordinate[]> previous, Coordinate start, Coordinate end) {
         List<Coordinate> path = new ArrayList<Coordinate>();
         if(previous != null) {
             Coordinate prev = previous.get(end.getX())[end.getY()];

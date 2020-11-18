@@ -146,9 +146,9 @@ public class Snake {
             grid.setGameState(moveRequest);
 
             Map<Coordinate, String> possibleMoves = findPossibleMove(grid);
-            LOG.info("POSSIBLE MOVES: {}", possibleMoves.size());
+            LOG.info("POSSIBLE MOVES: {}", possibleMoves);
             List<Coordinate> pathToNearestFood = grid.pathToNearestFood();
-            LOG.info("next step {}", pathToNearestFood);
+            LOG.info("PATH TO FOOD {}", pathToNearestFood);
 
             // Choose a random direction to move in
 //            List<Coordinate> neighbours = grid.getNeighbours(new Coordinate(moveRequest.get("you").get("head")));
@@ -163,6 +163,7 @@ public class Snake {
 //            LOG.info("nearest food {}", grid.findNearestFoodCoordinate());
 //            LOG.info("path to nearest food {}", grid.pathToNearestFood());
 
+            LOG.info("NEXT STEP {}", pathToNearestFood.get(0));
             String move;
             if(pathToNearestFood != null) {
                 move = possibleMoves.get(pathToNearestFood.get(0));

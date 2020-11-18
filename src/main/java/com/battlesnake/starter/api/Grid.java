@@ -120,11 +120,11 @@ public class Grid {
     }
 
     //private
-    public Coordinate findNearestFoodCoordinate() {
+    private Coordinate findNearestFoodCoordinate() {
         Coordinate head = this.getYouHead();
         List<Coordinate> foodCells = new ArrayList<Coordinate>();
         grid.forEach(list -> {
-            Arrays.stream(list).filter(cell -> cell.getHasFood() == true)
+            Arrays.stream(list).filter(cell -> cell.getHasFood() == true && cell.getFreeCell() == true)
                     .collect(Collectors.toList())
                     .forEach(cell -> {
                         foodCells.add(cell.getCoordinate());
@@ -147,7 +147,7 @@ public class Grid {
     }
 
     //private
-    public List<Coordinate> findShortestPath(Coordinate start, Coordinate end) {
+    private List<Coordinate> findShortestPath(Coordinate start, Coordinate end) {
         List<String> path = new ArrayList<String >();
 
         List<Coordinate[]> previous = new ArrayList<Coordinate[]>();
@@ -173,7 +173,8 @@ public class Grid {
             }
             List<Coordinate> neighbours = getNeighbours(node);
             for(Coordinate neighbour: neighbours) {
-                if(!visited.get(neighbour.getX())[neighbour.getY()]) {
+                if(!visited.get(neighbour.getX())[neighbour.getY()]
+                        && grid.get(neighbour.getX())[neighbour.getY()].getFreeCell()) {
                     bfsQueue.add(neighbour);
                     visited.get(neighbour.getX())[neighbour.getY()] = true;
                     previous.get(neighbour.getX())[neighbour.getY()] = node;
@@ -202,7 +203,7 @@ public class Grid {
     }
 
     //private
-    public List<Coordinate> reconstructPath(List<Coordinate[]> previous, Coordinate start, Coordinate end) {
+    private List<Coordinate> reconstructPath(List<Coordinate[]> previous, Coordinate start, Coordinate end) {
         List<Coordinate> path = new ArrayList<Coordinate>();
         path.add(end);
         if(previous != null) {

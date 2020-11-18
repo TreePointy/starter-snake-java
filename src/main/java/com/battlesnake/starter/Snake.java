@@ -145,28 +145,18 @@ public class Snake {
 
             //Map<Coordinate, String> possibleMoves = findPossibleMove(grid);
             List<String> possibleMoves = findPossibleMove(grid);
-            LOG.info("POSSIBLE MOVES: {}", possibleMoves);
+//            LOG.info("POSSIBLE MOVES: {}", possibleMoves);
             List<Coordinate> pathToNearestFood = grid.pathToNearestFood();
-            LOG.info("PATH TO FOOD {}", pathToNearestFood);
-            LOG.info("NEAREST FOOD {}", grid.findNearestFoodCoordinate());
-            LOG.info("FOOD CELLS {}", grid.getFoodCells());
+//            LOG.info("PATH TO FOOD {}", pathToNearestFood);
+//            LOG.info("NEAREST FOOD {}", grid.findNearestFoodCoordinate());
+//            LOG.info("FOOD CELLS {}", grid.getFoodCells());
 
             // Choose a random direction to move in
-//            List<Coordinate> neighbours = grid.getNeighbours(new Coordinate(moveRequest.get("you").get("head")));
             int randomChoice = new Random().nextInt(possibleMoves.size());
-
-            //testing the Grid methods
-//            Coordinate start = new Coordinate(1, 1);
-//            Coordinate end = new Coordinate(3, 3);
-//
-//            LOG.info("test path {}", grid.findShortestPath(start, end));
-//            LOG.info("test neighbour {}", grid.getNeighbours(start));
-//            LOG.info("nearest food {}", grid.findNearestFoodCoordinate());
-//            LOG.info("path to nearest food {}", grid.pathToNearestFood());
 
             String move;
             Coordinate nextCoordinate = pathToNearestFood.get(0);
-            LOG.info("NEXT COORD {}", nextCoordinate);
+//            LOG.info("NEXT COORD {}", nextCoordinate);
 
             String coordinateDirection = checkMoveCoordinate(nextCoordinate, grid);
 
@@ -174,7 +164,7 @@ public class Snake {
                     ? coordinateDirection
                     : possibleMoves.get(randomChoice);
 
-            LOG.info("MOVE {}", move);
+//            LOG.info("MOVE {}", move);
 
             Map<String, String> response = new HashMap<>();
             response.put("move", move);

@@ -168,7 +168,6 @@ public class Grid {
             }
         }
 
-
         return reconstructPath(previous, start, end);
     }
 

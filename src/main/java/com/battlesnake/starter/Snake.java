@@ -164,6 +164,7 @@ public class Snake {
             LOG.info("nearest food {}", grid.findNearestFoodCoordinate());
             LOG.info("path to nearest food {}", grid.pathToNearestFood());
 
+            LOG.info("possible moves {}", possibleMoves);
             String move = possibleMoves.get(pathToNearestFood.get(0));
             LOG.info("MOVE {}", move);
 

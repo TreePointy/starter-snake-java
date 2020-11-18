@@ -192,7 +192,7 @@ public class Snake {
 
         //primitive to test moving
         HashMap<Integer, String> findPossibleMove(Grid grid) {
-            List<String> possibleMovesString = new ArrayList<>();
+            //List<String> possibleMovesString = new ArrayList<>();
             Coordinate head = grid.getYouHead();
             if(head == null) {
                 return null;

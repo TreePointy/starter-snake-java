@@ -172,8 +172,12 @@ public class Grid {
 
     //private
     private List<Coordinate> findShortestPath(Coordinate start, Coordinate end) {
-        List<String> path = new ArrayList<String >();
 
+        if(start.equals(-1, -1) || end.equals(-1, -1)) {
+            return null;
+        }
+
+        List<String> path = new ArrayList<String >();
         List<Coordinate[]> previous = new ArrayList<Coordinate[]>();
         List<Boolean[]> visited = new ArrayList<Boolean[]>();
         for(int x = 0; x < this.getWidth(); x++) {

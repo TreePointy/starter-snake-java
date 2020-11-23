@@ -213,17 +213,11 @@ public class Grid {
     private List<Coordinate> reconstructPath(List<Coordinate[]> previous, Coordinate start, Coordinate end) {
         List<Coordinate> path = new ArrayList<Coordinate>();
         path.add(end);
-        if(previous != null) {
-            if(previous.get(end.getX()) != null) {
-                Coordinate prev = previous.get(end.getX())[end.getY()];
-                while (prev != null && !prev.equals(start)) {
-                    path.add(prev);
-                    if(previous.get(prev.getX()) != null) {
-                        prev = previous.get(prev.getX())[prev.getY()];
-                    } else {
-                        prev = null;
-                    }
-                }
+        if(previous != null && previous.size() > 0) {
+            Coordinate prev = previous.get(end.getX())[end.getY()];
+            while (prev != null && !prev.equals(start)) {
+                path.add(prev);
+                prev = previous.get(prev.getX())[prev.getY()];
             }
         }
         Collections.reverse(path);

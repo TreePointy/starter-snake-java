@@ -143,6 +143,8 @@ public class Snake {
 
             grid.setGameState(moveRequest);
 
+            LOG.info("FOOD: {}", moveRequest.get("board").get("food"));
+
             //Map<Coordinate, String> possibleMoves = findPossibleMove(grid);
             List<String> possibleMoves = findPossibleMove(grid, moveRequest.get("you"));
 //            LOG.info("POSSIBLE MOVES: {}", possibleMoves);

@@ -148,7 +148,7 @@ public class Snake {
 //            LOG.info("POSSIBLE MOVES: {}", possibleMoves);
             List<Coordinate> pathToNearestFood = grid.pathToNearestFood();
 //            LOG.info("PATH TO FOOD {}", pathToNearestFood);
-//            LOG.info("NEAREST FOOD {}", grid.findNearestFoodCoordinate());
+            LOG.info("NEAREST FOOD {}", grid.getFoodCells());
 //            LOG.info("FOOD CELLS {}", grid.getFoodCells());
 
             String move;

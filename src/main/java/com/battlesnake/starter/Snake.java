@@ -166,7 +166,7 @@ public class Snake {
 
             move = possibleMoves.contains(coordinateDirection)
                     ? coordinateDirection
-                    : possibleMoves.get(randomChoice)
+                    : possibleMoves.get(randomChoice);
 
             LOG.info("MOVE {}", move);
 

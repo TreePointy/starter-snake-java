@@ -2,6 +2,7 @@ package com.battlesnake.starter;
 
 import com.battlesnake.starter.api.Coordinate;
 import com.battlesnake.starter.api.Grid;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -130,11 +131,11 @@ public class Snake {
          * @return a response back to the engine containing Battlesnake movement values.
          */
         public Map<String, String> move(JsonNode moveRequest) {
-//            try {
-//                LOG.info("Data: {}", JSON_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(moveRequest));
-//            } catch (JsonProcessingException e) {
-//                e.printStackTrace();
-//            }
+            try {
+                LOG.info("Data: {}", JSON_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(moveRequest));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
 
             //initialize the grid
             Grid grid = new Grid();

@@ -11,12 +11,14 @@ public class Cell {
     private Boolean hasFood;
     private String occupyingSnakeHead;
     private String occupyingSnake;
+    private int snakeBodyOrderId;
 
-    public Cell(int x, int y, Boolean freeCell) {
+    public Cell(int x, int y, Boolean freeCell, int order) {
         this.coordinate = new Coordinate(x, y);
         this.freeCell = freeCell;
         this.hasFood = false;
         this.occupyingSnake = "";
         this.occupyingSnakeHead = "";
+        this.snakeBodyOrderId = order;
     }
 }

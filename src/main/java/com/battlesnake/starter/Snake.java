@@ -15,7 +15,7 @@ import static spark.Spark.*;
 
 /**
  * This is a simple Battlesnake server written in Java.
- * 
+ *
  * For instructions see
  * https://github.com/BattlesnakeOfficial/starter-snake-java/README.md
  */
@@ -86,16 +86,16 @@ public class Snake {
             }
         }
 
-    
+
         /**
          * This method is called everytime your Battlesnake is entered into a game.
-         * 
+         *
          * Use this method to decide how your Battlesnake is going to look on the board.
          *
          * @return a response back to the engine containing the Battlesnake setup
          *         values.
          */
-        public Map<String, String> index() {         
+        public Map<String, String> index() {
             Map<String, String> response = new HashMap<>();
             response.put("apiversion", "1");
             response.put("author", "Spaghetti, The Spanning Snake");  // TODO: Your Battlesnake Username
@@ -107,7 +107,7 @@ public class Snake {
 
         /**
          * This method is called everytime your Battlesnake is entered into a game.
-         * 
+         *
          * Use this method to decide how your Battlesnake is going to look on the board.
          *
          * @param startRequest a JSON data map containing the information about the game
@@ -122,7 +122,7 @@ public class Snake {
         /**
          * This method is called on every turn of a game. It's how your snake decides
          * where to move.
-         * 
+         *
          * Valid moves are "up", "down", "left", or "right".
          *
          * @param moveRequest a map containing the JSON sent to this snake. Use this
@@ -144,25 +144,31 @@ public class Snake {
             grid.setGameState(moveRequest);
 
             //Map<Coordinate, String> possibleMoves = findPossibleMove(grid);
-            List<String> possibleMoves = findPossibleMove(grid);
+            List<String> possibleMoves = findPossibleMove(grid, moveRequest.get("you"));
 //            LOG.info("POSSIBLE MOVES: {}", possibleMoves);
             List<Coordinate> pathToNearestFood = grid.pathToNearestFood();
 //            LOG.info("PATH TO FOOD {}", pathToNearestFood);
 //            LOG.info("NEAREST FOOD {}", grid.findNearestFoodCoordinate());
 //            LOG.info("FOOD CELLS {}", grid.getFoodCells());
 
-            // Choose a random direction to move in
-            int randomChoice = new Random().nextInt(possibleMoves.size());
-
             String move;
             Coordinate nextCoordinate = pathToNearestFood.get(0);
-//            LOG.info("NEXT COORD {}", nextCoordinate);
+
+//            LOG.info("NEXT COORD {}", grid.getFullYouSnakeCells(moveRequest.get("you")));
+//            LOG.info("NEXT COORD {}", grid.getCoordinateCell(nextCoordinate));
+//            List<Coordinate> loop = grid.getSnakeLoop(nextCoordinate);
+//            LOG.info("SNAKE LOOP: {}", loop);
 
             String coordinateDirection = checkMoveCoordinate(nextCoordinate, grid);
 
+            //Choose a random direction to move in
+            int randomChoice = new Random().nextInt(possibleMoves.size());
+
             move = possibleMoves.contains(coordinateDirection)
                     ? coordinateDirection
-                    : possibleMoves.get(randomChoice);
+                    : randomChoice > 0
+                    ? possibleMoves.get(randomChoice)
+                    : "up";
 
 //            LOG.info("MOVE {}", move);
 
@@ -173,7 +179,7 @@ public class Snake {
 
         /**
          * This method is called when a game your Battlesnake was in ends.
-         * 
+         *
          * It is purely for informational purposes, you don't have to make any decisions
          * here.
          *
@@ -188,34 +194,45 @@ public class Snake {
         }
 
         //primitive to test moving
-        List<String> findPossibleMove(Grid grid) {
+        List<String> findPossibleMove(Grid grid, JsonNode you) {
             List<String> possibleMovesString = new ArrayList<>();
             Coordinate head = grid.getYouHead();
-            List<Coordinate> youSnake = grid.getFullYouSnake();
+            List<Coordinate> youSnake = grid.getFullYouSnakeCoordinates();
             if(head == null) {
                 return null;
             }
+            Coordinate left = new Coordinate(head.getX() - 1, head.getY());
+            Coordinate right = new Coordinate(head.getX() + 1, head.getY());
+            Coordinate down = new Coordinate(head.getX(), head.getY() - 1);
+            Coordinate up = new Coordinate(head.getX(), head.getY() + 1);
             //HashMap<Coordinate, String> possibleMoves = new HashMap<Coordinate, String>();
 
-            if(head.getX() > 0
-                    && !selfOverlap(youSnake, new Coordinate(head.getX() - 1, head.getY()))) {
+            if(head.getX() > 0 && !selfOverlap(youSnake, left)) {
                 //possibleMoves.put(new Coordinate(head.getX() - 1, head.getY()), "left");
                 possibleMovesString.add("left");
             }
-            if(head.getX() + 1 < grid.getWidth()
-                    && !selfOverlap(youSnake, new Coordinate(head.getX() + 1, head.getY()))) {
+            if(head.getX() + 1 < grid.getWidth() && !selfOverlap(youSnake, right)) {
                 //possibleMoves.put(new Coordinate(head.getX() + 1, head.getY()), "right");
                 possibleMovesString.add("right");
             }
-            if(head.getY() > 0
-                    && !selfOverlap(youSnake, new Coordinate(head.getX(), head.getY() - 1))) {
+            if(head.getY() > 0 && !selfOverlap(youSnake, down)) {
                 //possibleMoves.put(new Coordinate(head.getX(), head.getY() - 1), "down");
                 possibleMovesString.add("down");
             }
-            if(head.getY() + 1 < grid.getHeight()
-                    && !selfOverlap(youSnake, new Coordinate(head.getX(), head.getY() + 1))) {
+            if(head.getY() + 1 < grid.getHeight() && !selfOverlap(youSnake, up)) {
                 //possibleMoves.put(new Coordinate(head.getX(), head.getY() + 1), "up");
                 possibleMovesString.add("up");
+                //LOG.info("LOOP UP{}", grid.getSnakeLoop(up));
+            }
+
+            if(selfOverlap(youSnake, left)) {
+                LOG.info("LOOP LEFT{}", grid.getSnakeLoop(left, you));
+            } else if(selfOverlap(youSnake, right)) {
+                LOG.info("LOOP RIGHT{}", grid.getSnakeLoop(right, you));
+            } else if(selfOverlap(youSnake, down)) {
+                LOG.info("LOOP DOWN{}", grid.getSnakeLoop(down, you));
+            } else if(selfOverlap(youSnake, up)) {
+                LOG.info("LOOP DOWN{}", grid.getSnakeLoop(up, you));
             }
 
             return possibleMovesString;

@@ -18,10 +18,12 @@ public class Grid {
     public void initializeGrid(int width, int height) {
         this.width = width;
         this.height = height;
+        int number = 0;
         for(int x = 0; x < width; x++) {
             grid.add(new Cell[height]);
             for(int y = 0; y < height; y++) {
-                grid.get(x)[y] = new Cell(x, y, true);
+                grid.get(x)[y] = new Cell(x, y, true, number);
+                number++;
             }
         }
     }
@@ -77,15 +79,37 @@ public class Grid {
                     .setOccupyingSnake(you.get("id").asText())
                     .setOccupyingSnakeHead(you.get("id").asText())
                     .setFreeCell(false);
-            you.get("body").forEach(coordinate -> {
-                grid.get(coordinate.get("x").asInt())[coordinate.get("y").asInt()]
-                        .setOccupyingSnake(you.get("id").asText())
-                        .setFreeCell(false);
-            });
+            for(int index = 0; index < you.get("body").size(); index++) {
+                grid.get(you.get("body").get(index).get("x").asInt())[you.get("body").get(index).get("y").asInt()]
+                        .setOccupyingSnake(you.get("id").asText().toString())
+                        .setFreeCell(false)
+                        .setSnakeBodyOrderId(index);
+            }
+//            you.get("body").forEach(coordinate -> {
+//                grid.get(coordinate.get("x").asInt())[coordinate.get("y").asInt()]
+//                        .setOccupyingSnake(you.get("id").asText())
+//                        .setFreeCell(false);
+//            });
         }
     }
 
-    public List<Coordinate> getFullYouSnake() {
+    public List<Cell> getFullYouSnakeCells(JsonNode you) {
+        List<Cell> snakeCells = new ArrayList<Cell>();
+        if(youId != null) {
+            grid.forEach(list -> {
+                Arrays.stream(list).filter(cell -> cell.getOccupyingSnake() == youId)
+                        .collect(Collectors.toList())
+                        .forEach(element -> snakeCells.add(element));
+            });
+        }
+        return snakeCells;
+    }
+
+    public Cell getCoordinateCell(Coordinate coord) {
+        return grid.get(coord.getX())[coord.getY()];
+    }
+
+    public List<Coordinate> getFullYouSnakeCoordinates() {
         if(youId != null) {
             List<Coordinate> fullYouSnake = new ArrayList<Coordinate>();
             grid.forEach(list -> {
@@ -136,8 +160,8 @@ public class Grid {
         for(int i = 0; i < foodCells.size(); i++){
             if(head.distanceToCoordinate(foodCells.get(i)) < distance) {
                 min = foodCells.get(i);
+                distance = head.distanceToCoordinate(foodCells.get(i));
             }
-            distance = head.distanceToCoordinate(foodCells.get(i));
         }
         return min;
     }
@@ -215,6 +239,82 @@ public class Grid {
         }
         Collections.reverse(path);
         return path;
+    }
+
+    private Coordinate getFarthestSafeCell() {
+        Coordinate head = this.getYouHead();
+        long distance = -100000;
+        Coordinate max = new Coordinate(-1, -1);
+        for(int x = 0; x < this.getWidth(); x++) {
+            for(int y = 0; y < this.getHeight(); y++) {
+                if(grid.get(x)[y].getFreeCell()
+                        && head.distanceToCoordinate(grid.get(x)[y].getCoordinate()) > distance) {
+                    max = grid.get(x)[y].getCoordinate();
+                    distance = head.distanceToCoordinate(grid.get(x)[y].getCoordinate());
+                }
+            }
+        }
+        return max;
+    }
+//
+//    //private
+//    public List<Coordinate> getSnakeLoop(Coordinate intersect) {
+//        List<Coordinate> loop = new ArrayList<Coordinate>();
+//        if(grid.get(intersect.getX())[intersect.getY()].getOccupyingSnake() == youId) {
+//            int snakeIntersectIndex = grid.get(intersect.getX())[intersect.getY()].getSnakeBodyOrderId();
+//            for(int x = 0; x < this.getWidth(); x++) {
+//                for(int y = 0; y < this.getHeight(); y++) {
+//                    if(grid.get(x)[y] != null && grid.get(x)[y].getSnakeBodyOrderId() <= snakeIntersectIndex) {
+//                        loop.add(grid.get(x)[y].getCoordinate());
+//                    }
+//                }
+//            }
+////            grid.forEach(list -> {
+////                Arrays.stream(list).filter(cell -> cell.getSnakeBodyOrderId() <= snakeIntersectIndex)
+////                        .collect(Collectors.toList())
+////                        .forEach(element -> loop.add(element.getCoordinate()));
+////            });
+//        }
+//        return loop;
+//    }
+
+
+    public List<Coordinate> getSnakeLoop(Coordinate intersect, JsonNode you) {
+        List<Coordinate> loop = new ArrayList<Coordinate>();
+        int snakeIntersectIndex = -1;
+        List<Cell> youSnake = getFullYouSnakeCells(you);
+        for(Cell cell : youSnake) {
+            if(cell.getCoordinate().equals(intersect)) {
+                snakeIntersectIndex = cell.getSnakeBodyOrderId();
+            }
+        }
+        if(snakeIntersectIndex > 0) {
+            for(Cell cell : youSnake) {
+                if(cell.getSnakeBodyOrderId() <= snakeIntersectIndex) {
+                    loop.add(cell.getCoordinate());
+                }
+            }
+//            grid.forEach(list -> {
+//                Arrays.stream(list).filter(cell -> cell.getSnakeBodyOrderId() <= snakeIntersectIndex)
+//                        .collect(Collectors.toList())
+//                        .forEach(element -> loop.add(element.getCoordinate()));
+//            });
+        }
+        return loop;
+    }
+
+    private Coordinate getMaxCoordinate(List<Coordinate> list) {
+        Coordinate max = new Coordinate(-1, -1);
+        int xCoordinate = -1;
+        int yCoordinate = -1;
+        for(Coordinate coordinate : list) {
+            if(coordinate.getX() > xCoordinate && coordinate.getY() > yCoordinate) {
+                max = coordinate;
+                xCoordinate = coordinate.getX();
+                yCoordinate = coordinate.getY();
+            }
+        }
+        return  max;
     }
 
 }

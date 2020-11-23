@@ -152,7 +152,7 @@ public class Snake {
 //            LOG.info("FOOD CELLS {}", grid.getFoodCells());
 
             String move;
-            Coordinate nextCoordinate = pathToNearestFood.get(0);
+            Coordinate nextCoordinate = pathToNearestFood != null ? pathToNearestFood.get(0) : null;
 
 //            LOG.info("NEXT COORD {}", grid.getFullYouSnakeCells(moveRequest.get("you")));
 //            LOG.info("NEXT COORD {}", grid.getCoordinateCell(nextCoordinate));
@@ -238,6 +238,9 @@ public class Snake {
 
         public String checkMoveCoordinate(Coordinate nextMove, Grid grid) {
             Coordinate head = grid.getYouHead();
+            if(nextMove == null) {
+                return null;
+            }
             if(nextMove.equals(head.getX() - 1, head.getY())) {
                 return "left";
             } else if (nextMove.equals(head.getX() + 1, head.getY())) {

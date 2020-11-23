@@ -49,7 +49,7 @@ public class Grid {
         List<Coordinate> foodCells = new ArrayList<Coordinate>();
         for(int x = 0; x < this.getWidth(); x++) {
             for(int y = 0; y < this.getHeight(); y++) {
-                if(grid.get(x)[y].getHasFood() && grid.get(x)[y].getFreeCell()) {
+                if(grid.get(x)[y].getHasFood()) {
                     foodCells.add(grid.get(x)[y].getCoordinate());
                 }
             }
@@ -148,7 +148,7 @@ public class Grid {
         Coordinate head = this.getYouHead();
         List<Coordinate> foodCells = new ArrayList<Coordinate>();
         grid.forEach(list -> {
-            Arrays.stream(list).filter(cell -> cell.getHasFood() == true && cell.getFreeCell() == true)
+            Arrays.stream(list).filter(cell -> cell.getHasFood() == true)
                     .collect(Collectors.toList())
                     .forEach(cell -> {
                         foodCells.add(cell.getCoordinate());

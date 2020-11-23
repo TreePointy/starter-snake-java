@@ -260,7 +260,7 @@ public class Grid {
         }
         return max;
     }
-//
+
 //    //private
 //    public List<Coordinate> getSnakeLoop(Coordinate intersect) {
 //        List<Coordinate> loop = new ArrayList<Coordinate>();

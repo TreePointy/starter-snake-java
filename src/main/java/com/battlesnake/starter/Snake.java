@@ -167,10 +167,10 @@ public class Snake {
             move = possibleMoves.contains(coordinateDirection)
                     ? coordinateDirection
                     : randomChoice > 0
-                    ? possibleMoves.get(randomChoice)
-                    : "up";
+                        ? possibleMoves.get(randomChoice)
+                        : "up";
 
-//            LOG.info("MOVE {}", move);
+            LOG.info("MOVE {}", move);
 
             Map<String, String> response = new HashMap<>();
             response.put("move", move);

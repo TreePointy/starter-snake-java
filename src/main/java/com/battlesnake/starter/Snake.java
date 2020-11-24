@@ -150,7 +150,8 @@ public class Snake {
 //            LOG.info("POSSIBLE MOVES: {}", possibleMoves);
             String move;
 
-            //Snake will try to find nearest food
+            //SNAKE WILL TRY TO FIND NEAREST FOOD
+            //------------------------------------
             List<Coordinate> pathToNearestFood = grid.pathToNearestFood();
 //            LOG.info("PATH TO FOOD {}", pathToNearestFood);
 //            LOG.info("NEAREST FOOD {}", grid.getFoodCells());
@@ -161,9 +162,15 @@ public class Snake {
 //            LOG.info("NEXT COORD {}", grid.getCoordinateCell(nextCoordinate));
 //            List<Coordinate> loop = grid.getSnakeLoop(nextCoordinate);
 //            LOG.info("SNAKE LOOP: {}", loop);
-            
+            //------------------------------------
 
-            coordinateDirection = grid.weaveSnakeRow(possibleMoves, 3, "up");
+
+            //SNAKE WILL WEAVE THROUGH ROWS
+            //------------------------------------
+            if(moveRequest.get("board").get("food").size() == 0) {
+                coordinateDirection = grid.weaveSnakeRow(possibleMoves, 3, "up");
+            }
+            //------------------------------------
 
             //Choose a random direction to move in
             int randomChoice = new Random().nextInt(possibleMoves.size());

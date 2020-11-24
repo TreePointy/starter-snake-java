@@ -137,11 +137,11 @@ public class Snake {
 //                e.printStackTrace();
 //            }
 
-            //initialize the grid
+            //INITIALIZE THE GRID
+            //------------------------------------
             Grid grid = new Grid();
             grid.initializeGrid(moveRequest.get("board").get("width").asInt(),
                     moveRequest.get("board").get("height").asInt());
-
             grid.setGameState(moveRequest);
 
             LOG.info("FOOD: {}", moveRequest.get("board").get("food"));
@@ -153,11 +153,11 @@ public class Snake {
             //SNAKE WILL TRY TO FIND NEAREST FOOD
             //------------------------------------
             List<Coordinate> pathToNearestFood = grid.pathToNearestFood();
+            Coordinate nextCoordinate = pathToNearestFood != null ? pathToNearestFood.get(0) : null;
+            String coordinateDirection = checkMoveCoordinate(nextCoordinate, grid);
 //            LOG.info("PATH TO FOOD {}", pathToNearestFood);
 //            LOG.info("NEAREST FOOD {}", grid.getFoodCells());
 //            LOG.info("FOOD CELLS {}", grid.getFoodCells());
-            Coordinate nextCoordinate = pathToNearestFood != null ? pathToNearestFood.get(0) : null;
-            String coordinateDirection = checkMoveCoordinate(nextCoordinate, grid);
 //            LOG.info("NEXT COORD {}", grid.getFullYouSnakeCells(moveRequest.get("you")));
 //            LOG.info("NEXT COORD {}", grid.getCoordinateCell(nextCoordinate));
 //            List<Coordinate> loop = grid.getSnakeLoop(nextCoordinate);
@@ -202,7 +202,6 @@ public class Snake {
             return EMPTY;
         }
 
-        //primitive to test moving
         List<String> findPossibleMove(Grid grid, JsonNode you) {
             List<String> possibleMovesString = new ArrayList<>();
             Coordinate head = grid.getYouHead();
@@ -214,24 +213,18 @@ public class Snake {
             Coordinate right = new Coordinate(head.getX() + 1, head.getY());
             Coordinate down = new Coordinate(head.getX(), head.getY() - 1);
             Coordinate up = new Coordinate(head.getX(), head.getY() + 1);
-            //HashMap<Coordinate, String> possibleMoves = new HashMap<Coordinate, String>();
 
             if(head.getX() > 0 && !selfOverlap(youSnake, left)) {
-                //possibleMoves.put(new Coordinate(head.getX() - 1, head.getY()), "left");
                 possibleMovesString.add("left");
             }
             if(head.getX() + 1 < grid.getWidth() && !selfOverlap(youSnake, right)) {
-                //possibleMoves.put(new Coordinate(head.getX() + 1, head.getY()), "right");
                 possibleMovesString.add("right");
             }
             if(head.getY() > 0 && !selfOverlap(youSnake, down)) {
-                //possibleMoves.put(new Coordinate(head.getX(), head.getY() - 1), "down");
                 possibleMovesString.add("down");
             }
             if(head.getY() + 1 < grid.getHeight() && !selfOverlap(youSnake, up)) {
-                //possibleMoves.put(new Coordinate(head.getX(), head.getY() + 1), "up");
                 possibleMovesString.add("up");
-                //LOG.info("LOOP UP{}", grid.getSnakeLoop(up));
             }
 
             if(selfOverlap(youSnake, left)) {

@@ -49,7 +49,7 @@ public class Grid {
         List<Coordinate> foodCells = new ArrayList<Coordinate>();
         for(int x = 0; x < this.getWidth(); x++) {
             for(int y = 0; y < this.getHeight(); y++) {
-                if(grid.get(x)[y].getHasFood() && grid.get(x)[y].getFreeCell()) {
+                if(grid.get(x)[y].getHasFood()) {
                     foodCells.add(grid.get(x)[y].getCoordinate());
                 }
             }
@@ -148,7 +148,7 @@ public class Grid {
         Coordinate head = this.getYouHead();
         List<Coordinate> foodCells = new ArrayList<Coordinate>();
         grid.forEach(list -> {
-            Arrays.stream(list).filter(cell -> cell.getHasFood() == true && cell.getFreeCell() == true)
+            Arrays.stream(list).filter(cell -> cell.getHasFood() == true)
                     .collect(Collectors.toList())
                     .forEach(cell -> {
                         foodCells.add(cell.getCoordinate());
@@ -158,9 +158,9 @@ public class Grid {
         long distance = 1000000;
         Coordinate min = new Coordinate(-1, -1);
         for(int i = 0; i < foodCells.size(); i++){
-            if(head.distanceToCoordinate(foodCells.get(i)) < distance) {
+            if(head.distanceToCoordinateSquared(foodCells.get(i)) < distance) {
                 min = foodCells.get(i);
-                distance = head.distanceToCoordinate(foodCells.get(i));
+                distance = head.distanceToCoordinateSquared(foodCells.get(i));
             }
         }
         return min;
@@ -172,8 +172,12 @@ public class Grid {
 
     //private
     private List<Coordinate> findShortestPath(Coordinate start, Coordinate end) {
-        List<String> path = new ArrayList<String >();
 
+        if(start.equals(-1, -1) || end.equals(-1, -1)) {
+            return null;
+        }
+
+        List<String> path = new ArrayList<String >();
         List<Coordinate[]> previous = new ArrayList<Coordinate[]>();
         List<Boolean[]> visited = new ArrayList<Boolean[]>();
         for(int x = 0; x < this.getWidth(); x++) {
@@ -209,6 +213,21 @@ public class Grid {
         return reconstructPath(previous, start, end);
     }
 
+    //private
+    private List<Coordinate> reconstructPath(List<Coordinate[]> previous, Coordinate start, Coordinate end) {
+        List<Coordinate> path = new ArrayList<Coordinate>();
+        path.add(end);
+        if(previous != null && previous.size() > 0) {
+            Coordinate prev = previous.get(end.getX())[end.getY()];
+            while (prev != null && !prev.equals(start)) {
+                path.add(prev);
+                prev = previous.get(prev.getX())[prev.getY()];
+            }
+        }
+        Collections.reverse(path);
+        return path;
+    }
+
     public List<Coordinate> getNeighbours(Coordinate cell) {
         List<Coordinate> neighbours = new ArrayList<Coordinate>();
         if(cell.getX() - 1 > 0 && grid.get(cell.getX() - 1)[cell.getY()].getFreeCell()) {
@@ -226,21 +245,6 @@ public class Grid {
         return neighbours;
     }
 
-    //private
-    private List<Coordinate> reconstructPath(List<Coordinate[]> previous, Coordinate start, Coordinate end) {
-        List<Coordinate> path = new ArrayList<Coordinate>();
-        path.add(end);
-        if(previous != null) {
-            Coordinate prev = previous.get(end.getX())[end.getY()];
-            while (prev != null && !prev.equals(start)) {
-                path.add(prev);
-                prev = previous.get(prev.getX())[prev.getY()];
-            }
-        }
-        Collections.reverse(path);
-        return path;
-    }
-
     private Coordinate getFarthestSafeCell() {
         Coordinate head = this.getYouHead();
         long distance = -100000;
@@ -248,15 +252,15 @@ public class Grid {
         for(int x = 0; x < this.getWidth(); x++) {
             for(int y = 0; y < this.getHeight(); y++) {
                 if(grid.get(x)[y].getFreeCell()
-                        && head.distanceToCoordinate(grid.get(x)[y].getCoordinate()) > distance) {
+                        && head.distanceToCoordinateSquared(grid.get(x)[y].getCoordinate()) > distance) {
                     max = grid.get(x)[y].getCoordinate();
-                    distance = head.distanceToCoordinate(grid.get(x)[y].getCoordinate());
+                    distance = head.distanceToCoordinateSquared(grid.get(x)[y].getCoordinate());
                 }
             }
         }
         return max;
     }
-//
+
 //    //private
 //    public List<Coordinate> getSnakeLoop(Coordinate intersect) {
 //        List<Coordinate> loop = new ArrayList<Coordinate>();
@@ -315,6 +319,22 @@ public class Grid {
             }
         }
         return  max;
+    }
+
+    public String weaveSnakeRow(List<String> possibleMoves, int numberOfLines, String rowDirection) {
+        String path = null;
+        if(!possibleMoves.contains("left") && !possibleMoves.contains("right")) {
+            if(possibleMoves.contains(rowDirection)) {
+                path = rowDirection;
+            }
+            return path;
+        }
+
+        return possibleMoves.contains("left") && !possibleMoves.contains("right")
+                ? "left"
+                : possibleMoves.contains("right") && !possibleMoves.contains("left")
+                    ? "right"
+                    : null;
     }
 
 }

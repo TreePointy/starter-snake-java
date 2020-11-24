@@ -158,9 +158,9 @@ public class Grid {
         long distance = 1000000;
         Coordinate min = new Coordinate(-1, -1);
         for(int i = 0; i < foodCells.size(); i++){
-            if(head.distanceToCoordinate(foodCells.get(i)) < distance) {
+            if(head.distanceToCoordinateSquared(foodCells.get(i)) < distance) {
                 min = foodCells.get(i);
-                distance = head.distanceToCoordinate(foodCells.get(i));
+                distance = head.distanceToCoordinateSquared(foodCells.get(i));
             }
         }
         return min;
@@ -252,9 +252,9 @@ public class Grid {
         for(int x = 0; x < this.getWidth(); x++) {
             for(int y = 0; y < this.getHeight(); y++) {
                 if(grid.get(x)[y].getFreeCell()
-                        && head.distanceToCoordinate(grid.get(x)[y].getCoordinate()) > distance) {
+                        && head.distanceToCoordinateSquared(grid.get(x)[y].getCoordinate()) > distance) {
                     max = grid.get(x)[y].getCoordinate();
-                    distance = head.distanceToCoordinate(grid.get(x)[y].getCoordinate());
+                    distance = head.distanceToCoordinateSquared(grid.get(x)[y].getCoordinate());
                 }
             }
         }
@@ -319,6 +319,22 @@ public class Grid {
             }
         }
         return  max;
+    }
+
+    public String weaveSnakeRow(List<String> possibleMoves, int numberOfLines, String rowDirection) {
+        String path = null;
+        if(!possibleMoves.contains("left") && !possibleMoves.contains("right")) {
+            if(possibleMoves.contains(rowDirection)) {
+                path = rowDirection;
+            }
+            return path;
+        }
+
+        return possibleMoves.contains("left") && !possibleMoves.contains("right")
+                ? "left"
+                : possibleMoves.contains("right") && !possibleMoves.contains("left")
+                    ? "right"
+                    : null;
     }
 
 }

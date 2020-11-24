@@ -1,5 +1,6 @@
 package com.battlesnake.starter.api;
 
+import static java.lang.Math.sqrt;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.Data;
@@ -37,8 +38,12 @@ public class Coordinate {
         return this.x == x && this.y == y;
     }
 
-    public long distanceToCoordinate(Coordinate endpoint) {
+    public long distanceToCoordinateSquared(Coordinate endpoint) {
         return ((endpoint.getX() - this.getX())*(endpoint.getX() - this.getX())
                         + (endpoint.getY() - this.getY())* (endpoint.getY() - this.getY()) );
+    }
+
+    public long distanceToCoordinate(Coordinate endpoint) {
+        return (long)sqrt(distanceToCoordinateSquared(endpoint));
     }
 }

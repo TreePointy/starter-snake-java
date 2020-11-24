@@ -136,7 +136,6 @@ public class Snake {
 //            } catch (JsonProcessingException e) {
 //                e.printStackTrace();
 //            }
-            LOG.info("FOOD DATA: {}", moveRequest.get("food"));
 
             //initialize the grid
             Grid grid = new Grid();
@@ -147,23 +146,24 @@ public class Snake {
 
             LOG.info("FOOD: {}", moveRequest.get("board").get("food"));
 
-            //Map<Coordinate, String> possibleMoves = findPossibleMove(grid);
             List<String> possibleMoves = findPossibleMove(grid, moveRequest.get("you"));
 //            LOG.info("POSSIBLE MOVES: {}", possibleMoves);
+            String move;
+
+            //Snake will try to find nearest food
             List<Coordinate> pathToNearestFood = grid.pathToNearestFood();
 //            LOG.info("PATH TO FOOD {}", pathToNearestFood);
-            LOG.info("NEAREST FOOD {}", grid.getFoodCells());
+//            LOG.info("NEAREST FOOD {}", grid.getFoodCells());
 //            LOG.info("FOOD CELLS {}", grid.getFoodCells());
-
-            String move;
             Coordinate nextCoordinate = pathToNearestFood != null ? pathToNearestFood.get(0) : null;
-
+            String coordinateDirection = checkMoveCoordinate(nextCoordinate, grid);
 //            LOG.info("NEXT COORD {}", grid.getFullYouSnakeCells(moveRequest.get("you")));
 //            LOG.info("NEXT COORD {}", grid.getCoordinateCell(nextCoordinate));
 //            List<Coordinate> loop = grid.getSnakeLoop(nextCoordinate);
 //            LOG.info("SNAKE LOOP: {}", loop);
+            
 
-            String coordinateDirection = checkMoveCoordinate(nextCoordinate, grid);
+            coordinateDirection = grid.weaveSnakeRow(possibleMoves, 3, "up");
 
             //Choose a random direction to move in
             int randomChoice = new Random().nextInt(possibleMoves.size());
@@ -267,6 +267,7 @@ public class Snake {
 
             return false;
         }
+
     }
 
 

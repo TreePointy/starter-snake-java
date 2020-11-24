@@ -131,11 +131,12 @@ public class Snake {
          * @return a response back to the engine containing Battlesnake movement values.
          */
         public Map<String, String> move(JsonNode moveRequest) {
-            try {
-                LOG.info("Data: {}", JSON_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(moveRequest));
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                LOG.info("Data: {}", JSON_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(moveRequest));
+//            } catch (JsonProcessingException e) {
+//                e.printStackTrace();
+//            }
+            LOG.info("FOOD DATA: {}", moveRequest.get("food"));
 
             //initialize the grid
             Grid grid = new Grid();
